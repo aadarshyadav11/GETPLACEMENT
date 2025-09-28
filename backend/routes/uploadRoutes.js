@@ -3,6 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import User from '../models/User.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -38,13 +40,37 @@ const fileFilter = (req,file,cb) => {
 const upload = multer({storage, fileFilter});
 
 // Route: POST  /api/upload/resume
-router.post('/resume', upload.single("resume"), (req, res) => {
-    res.json({
-        message: "Resume uploaded successfully...",
-        file: req.file
-    });
-}); 
+router.post('/resume', upload.single("resume"), async (req, res) => {
+    try {
+        const { name, email } = req.body;
 
+        if(!name || !email){
+            return res.status(400).json({error : "Name and Email are required!"});
+        }
+
+        let user = await User.findOne({email});
+
+        if(user){
+            user.resume = req.file.path;
+            await user.save();
+        }
+        else{
+            user = await User.create({
+                name,
+                email,
+                resume: req.file.path,
+            });
+        }
+
+    res.json({
+        message: "Resume uploaded successfully & user saved...",
+        user,
+    });
+} catch(error){
+    res.status(500).json({error: error.message });
+}
+
+}); 
 
 
 export default router;

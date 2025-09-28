@@ -2,7 +2,13 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 
+import connectDB from './config/database.js';
+
+connectDB();
+
+// importing routes
 import uploadRoutes from './routes/uploadRoutes.js'
+
 
 // middleware
 const app = express();
