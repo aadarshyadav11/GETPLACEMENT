@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        password: {
+            type: String,
+            required: true,   
+        },
         resume: {
             type: String   // file path from uploads folder 
         },

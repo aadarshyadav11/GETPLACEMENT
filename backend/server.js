@@ -7,7 +7,8 @@ import connectDB from './config/database.js';
 connectDB();
 
 // importing routes
-import uploadRoutes from './routes/uploadRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 
 // middleware
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // API routes
 app.use("/api/upload", uploadRoutes);
+app.use("/api/auth", authRoutes);
 
 
 
