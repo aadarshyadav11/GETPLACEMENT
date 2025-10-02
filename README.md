@@ -31,9 +31,9 @@ This project empowers students to feel confident, prepared, and industry-ready f
 - Campus drives preparation assistance
 
 ## Project Structure
--> backend/   # Node.js (ESM) backend + API
--> frontend/  # React (Vite) frontend
--> ai-service/ # python fastAPI AI microservice
+- backend/   # Node.js (ESM) backend + API
+- frontend/  # React (Vite) frontend
+- ai-service/ # python fastAPI AI microservice
 
 ## Tech Stack
 - **Frontend**: React.js, tailwind CSS
