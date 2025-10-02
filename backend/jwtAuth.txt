@@ -1,0 +1,41 @@
+[1] User Login (POST /api/auth/login)
+     ↓
+   Backend verifies email+password
+     ↓
+   ✅ Generates JWT Token
+     {
+       "id": "6521abcd1234",
+       "email": "aadarsh@example.com",
+       "iat": 1738090000,
+       "exp": 1738093600
+     }
+
+[2] Client Stores Token (localStorage / frontend memory)
+
+[3] Resume Upload (POST /api/upload/resume)
+     → Request Headers:
+         Authorization: Bearer <JWT_TOKEN>
+     → Body:
+         resume: <yourfile.pdf>
+
+[4] Middleware protect()
+     - Reads token from header
+     - Decodes user ID from token
+     - Fetches User from DB
+     - Attaches user to req.user
+
+[5] Upload Route
+     - Gets user info from req.user
+     - Stores resume path in DB
+     - Returns success response
+
+[6] Response
+   {
+     "message": "Resume uploaded & linked to user 🚀",
+     "user": {
+        "_id": "6521abcd1234",
+        "name": "Aadarsh Yadav",
+        "email": "aadarsh@example.com",
+        "resume": "uploads/173123-yourresume.pdf"
+     }
+   }

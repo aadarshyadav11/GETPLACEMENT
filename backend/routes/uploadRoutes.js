@@ -3,6 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+
+import protect from '../middleware/authMiddleware.js';
 import User from '../models/User.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,10 +41,11 @@ const fileFilter = (req,file,cb) => {
 
 const upload = multer({storage, fileFilter});
 
-// Route: POST  /api/upload/resume
-router.post('/resume', upload.single("resume"), async (req, res) => {
+// Protected Route: POST  /api/upload/resume
+router.post('/resume', protect, upload.single("resume"), async (req, res) => {
     try {
-        const { name, email } = req.body;
+        // by using this we upload resume without login
+       /* const { name, email } = req.body;
 
         if(!name || !email){
             return res.status(400).json({error : "Name and Email are required!"});
@@ -66,6 +69,22 @@ router.post('/resume', upload.single("resume"), async (req, res) => {
         message: "Resume uploaded successfully & user saved...",
         user,
     });
+    */
+
+
+    if(!req.file){
+        return res.status(400).json({ error : "No file uploaded"});
+    }
+
+    // attaching resume to logged-in user
+    req.user.resume = req.file.path;
+    await req.user.save();
+
+    res.json({
+        message: "Resume Uploaded and linked to user",
+        user: req.user,
+    });
+
 } catch(error){
     res.status(500).json({error: error.message });
 }
