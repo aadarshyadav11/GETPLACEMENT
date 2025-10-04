@@ -10,6 +10,7 @@ import User from '../models/User.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 const router = express.Router();
 
 // storage config
@@ -76,8 +77,8 @@ router.post('/resume', protect, upload.single("resume"), async (req, res) => {
         return res.status(400).json({ error : "No file uploaded"});
     }
 
-    // attaching resume to logged-in user
-    req.user.resume = req.file.path;
+    // save relative path of OS path
+    req.user.resume = `/uploads/${req.file.filename}`;
     await req.user.save();
 
     res.json({

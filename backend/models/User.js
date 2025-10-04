@@ -16,8 +16,26 @@ const userSchema = new mongoose.Schema(
             required: true,   
         },
         resume: {
-            type: String   // file path from uploads folder 
+            type: String,   // file path from uploads folder 
         },
+        skills: {
+            type: String,
+        },
+        cgpa:{
+            type: Number,
+            min: 0,
+            max: 10
+        },
+        achievements:{
+            type: String,
+        },
+        careerGoals:{
+            type: String,
+        },
+        placementReadinessScore:{
+            type:Number,
+            default: 0,
+        }
     }, 
     {timestamps: true}
 

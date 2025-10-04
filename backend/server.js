@@ -1,16 +1,23 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from "url";
+
 
 import connectDB from './config/database.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 connectDB();
+
+
 
 // importing routes
 import uploadRoutes from './routes/uploadRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-
 
 // middleware
 const app = express();
@@ -27,9 +34,7 @@ app.use("/api/user", userRoutes);
 
 
 // serve uploaded files
-app.use("/uploads", express.static("uploads"));
-
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.get('/api/health', (req,res) => {

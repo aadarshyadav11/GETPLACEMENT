@@ -25,18 +25,17 @@ export const updateUserProfile = async (req, res) => {
         //update fields (unly if provided)
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
+        user.skills = req.body.skills || user.skills;
+        user.cgpa = req.body.cgpa || user.cgpa;
+        user.achievements = req.body.achievements || user.achievements;
+        user.careerGoals = req.body.careerGoals || user.careerGoals;
+
         
         const updatedUser = await user.save();
-
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            resume: updatedUser.resume,
-            createdAt: updatedUser.createdAt,
-        })
+        console.log(updatedUser);
+        res.json(updatedUser);
     }
     catch(error){
-        res.status(500).json({ error: "Server error"});
+        res.status(500).json({ error: error.message});
     }
 };
